@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 LSTM (Long Short-Term Memory),LSTM-based Time Series Forecasting Model. air_quality.py
 dashboard
 train_lstm train forecast
@@ -47,3 +48,7 @@ backend/
 │       └── data_ws.py         # WebSocket endpoint `/ws/data`, `/ws/air_quality`
 
 nhớ sửa group_id trong predict
+=======
+# name
+PBL_5_KHDLQLDA
+>>>>>>> c2fad35fd5418bf2ce9a3d675779d59da754c2fc
