@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bản đồ chất lượng không khí</title>
+
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <!-- CSS tùy chỉnh -->
+    <link rel="stylesheet" href="air_quality.css">
+</head>
+<body>
+    <div id="map">
+        <div id="info-panel">
+            <div class="info-header">
+                <h2>🌍 Chất lượng không khí</h2>
+                <p id="location">📍 Đang xác định vị trí...</p>
+            </div>
+            <div class="info-content">
+                <p><strong>Tọa độ:</strong> <span id="coords">-</span></p>
+                <p><strong>Chất lượng:</strong> <span id="quality">-</span></p>
+                <p><strong>Nhiệt độ:</strong> <span id="temperature">-</span></p>
+                <p><strong>Độ ẩm:</strong> <span id="humidity">-</span></p>
+                <p><strong>MQ:</strong> <span id="mq">-</span></p>
+                <p><strong>Bụi mịn:</strong> <span id="dust">-</span></p>
+                <p><strong>Thời gian:</strong> <span id="timestamp">-</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="air_quality_map.js"></script>
+</body>
+</html>

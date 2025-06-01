@@ -1,0 +1,54 @@
+/* Reset và toàn màn hình */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Bản đồ chiếm toàn bộ */
+#map {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+}
+
+/* Panel thông tin bên trái */
+#info-panel {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    width: 300px;
+    background: #ffffffdd;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    padding: 20px 24px;
+    z-index: 999;
+    backdrop-filter: blur(4px);
+}
+
+/* Tiêu đề */
+.info-header h2 {
+    margin: 0;
+    font-size: 20px;
+    color: #2c3e50;
+}
+
+/* Vị trí */
+#location {
+    margin: 8px 0 16px;
+    color: #555;
+    font-size: 14px;
+}
+
+/* Nội dung thông tin */
+.info-content p {
+    margin: 6px 0;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+/* Làm đậm các nhãn */
+.info-content strong {
+    color: #333;
+}

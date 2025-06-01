@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chất lượng không khí - Da Nang</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+    />
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+  </head>
+  <body>
+   <header
+  style="
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  "
+>
+  <!-- Logo AQI -->
+  <div style="display: flex; align-items: center">
+    <img
+      src="logo_aqi.png"
+      alt="AQI Logo"
+      style="height: 40px; margin-right: 10px"
+    />
+  </div>
+
+  <!-- Search box -->
+  <div style="flex-grow: 1; margin: 0 20px">
+    <input
+      type="text"
+      placeholder="Tìm kiếm bất kỳ Địa điểm, Thành phố, Bang hoặc Quốc gia..."
+      style="
+        width: 100%;
+        padding: 8px 12px;
+        border-radius: 20px;
+        border: 1px solid #ccc;
+      "
+    />
+  </div>
+
+  <!-- Tiêu chuẩn AQI + Ngôn ngữ + Avatar -->
+  <div style="display: flex; align-items: center; gap: 20px">
+    <div>
+      <span style="color: #3399ff; font-size: 14px;">AQI-US</span>
+    </div>
+    <div>
+      <span style="color: #cb2c51; font-size: 14px;">🇻🇳</span>
+    </div>
+
+    <!-- Avatar + Dropdown -->
+    <div id="user-menu" style="position: relative">
+      <img
+        id="user-avatar"
+        src="avatar.png"
+        alt="User Avatar"
+        style="height: 36px; width: 36px; border-radius: 30%; cursor: pointer;"
+        onclick="toggleUserDropdown()"
+      />
+
+      <div
+        id="dropdown-menu"
+        style="
+          display: block;
+          position: absolute;
+          right: 0;
+          top: 45px;
+          background-color: white;
+          border: 1px solid #ccc;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+          border-radius: 6px;
+          overflow: hidden;
+          z-index: 999;
+          min-width: 150px;
+        "
+      >
+        <a
+          href="account.html"
+          style="display: block; padding: 8px 12px; text-decoration: none; color: #333; font-size: 14px;"
+        >👤 Quản lý tài khoản</a>
+        <a
+          href="#"
+          onclick="logout()"
+          style="display: block; padding: 8px 12px; text-decoration: none; color: #e53935; font-size: 14px;"
+        >🚪 Đăng xuất</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+    <main class="center-box">
+      <div class="map-box">
+        <div class="map-placeholder">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=..."
+            style="border: 0"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          >
+          </iframe>
+          <div class="map-label">MAP</div>
+        </div>
+        <button
+          class="expand-map"
+          onclick="window.open('air_quality_map.html', '_blank')"
+        >
+          [ ]
+        </button>
+      </div>
+
+      <div class="aqi-container">
+        <!-- Cột trái -->
+        <div class="aqi-left">
+          <div class="aqi-heading" id="aqiCircle">
+            <!-- Đặt id ở đây -->
+            <div class="aqi-dot"></div>
+            AQI
+            <div class="aqi-number" id="aqiValue">--</div>
+          </div>
+          <div class="aqi-status" id="aqiStatus">
+            Chất lượng không khí: <span id="qualityText">--</span>
+          </div>
+          <div class="aqi-pm">
+            <div>PM10: <strong id="pm10">--</strong> µg/m³</div>
+            <div>PM2.5: <strong id="pm25">--</strong> µg/m³</div>
+            <div>Chỉ số khí độc tổng hợp: <strong id="mq">--</strong>ppb</div>
+          </div>
+          <div class="aqi-bar">
+            <div class="bar good">Tốt</div>
+            <div class="bar moderate">TB</div>
+            <div class="bar unhealthy">Xấu</div>
+            <div class="bar hazardous">SOS</div>
+          </div>
+
+          <!-- Thêm dòng này để hiển thị các mốc -->
+          <div class="bar-labels">
+            <div class="label">0–50</div>
+            <div class="label">51–100</div>
+            <div class="label">101–200</div>
+            <div class="label">201+</div>
+          </div>
+        </div>
+
+        <!-- Cột phải -->
+        <div class="weather-right">
+          <div class="weather-icon">⛅</div>
+          <div class="weather-info">
+            <div>Nhiệt độ: <strong id="temperature">--</strong>°C</div>
+            <div>Độ ẩm: <strong id="humidity">--</strong>%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Khung dưới -->
+      <div class="bottom-box">
+        <h3>Dự báo chất lượng không khí trong tương lai</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Thời gian</th>
+              <th>Nhiệt độ (°C)</th>
+              <th>Độ ẩm (%)</th>
+              <th>Chỉ số khí độc tổng hợp(ppb)</th>
+              <th>PM10(µg/m³)</th>
+              <th>PM2.5(µg/m³)</th>
+              <th>AQI</th>
+              <th>Chất lượng</th>
+            </tr>
+          </thead>
+          <tbody id="forecast-table-body"></tbody>
+        </table>
+        <div class="aqi-info-box">
+          <div class="aqi-tabs">
+            <button class="tab-btn active" data-tab="aqi-tab">AQI</button>
+            <button class="tab-btn" data-tab="pm-tab">PM</button>
+            <button class="tab-btn" data-tab="gas-tab">Hỗn hợp khí độc</button>
+          </div>
+
+          <div class="tab-contents">
+            <div id="aqi-tab" class="tab-content active">
+              <div class="level good">
+                <h3>Tốt (0 đến 50)</h3>
+                <p>
+                  Không khí trong lành và không có độc tố. Thoải mái hoạt động
+                  ngoài trời mà không lo lắng về sức khỏe.
+                </p>
+              </div>
+              <div class="level moderate">
+                <h3>Trung bình (51 đến 100)</h3>
+                <p>
+                  Chất lượng không khí có thể chấp nhận được đối với hầu hết mọi
+                  người, nhưng những người nhạy cảm có thể cảm thấy khó chịu
+                  nhẹ.
+                </p>
+              </div>
+              <div class="level poor">
+                <h3>Xấu (101 đến 200)</h3>
+                <p>
+                  Hai khó thở một chút có thể xảy ra, đặc biệt đối với những
+                  người có vấn đề về hô hấp.
+                </p>
+              </div>
+
+              <div class="level unhealthy">
+                <h3>Cực kỳ nguy hiểm (201+)</h3>
+                <p>
+                  Mức độ ô nhiễm nguy hiểm cao. Nguy cơ sức khỏe đe dọa tính
+                  mạng với việc tiếp xúc lâu dài. Ở trong nhà và thực hiện các
+                  biện pháp phòng ngừa.
+                </p>
+              </div>
+            </div>
+
+            <div id="pm-tab" class="tab-content">
+              <div class="level good">
+                <h3>Tốt (0 đến 30)</h3>
+                <p>
+                  Chất lượng không khí hoàn hảo và rõ ràng. Không có rủi ro sức
+                  khỏe cho bất kỳ nhóm nào.
+                </p>
+                <p><strong>PM2.5 tốt</strong></p>
+              </div>
+
+              <div class="level moderate">
+                <h3>Trung bình (31 đến 60)</h3>
+                <p>
+                  Chất lượng không khí có thể chấp nhận được, nhưng các nhóm
+                  nhạy cảm có thể trải qua sự kích thích hô hấp nhẹ.
+                </p>
+                <p><strong>PM2.5 trung bình</strong></p>
+              </div>
+
+              <div class="level poor">
+                <h3>Xấu (61 đến 90)</h3>
+                <p>
+                  Khó chịu nhẹ và khó thở có thể xảy ra, đặc biệt đối với các
+                  nhóm nhạy cảm.
+                </p>
+                <p><strong>PM2.5 xấu</strong></p>
+              </div>
+
+              <div class="level unhealthy">
+                <h3>Cực kỳ nguy hiểm (121 đến 250+)</h3>
+                <p>
+                  Cảnh báo sức khỏe! Mọi người có thể gặp phải tác động sức khỏe
+                  nghiêm trọng.
+                </p>
+                <p><strong>PM2.5 Cực kỳ nguy hiểm</strong></p>
+              </div>
+            </div>
+
+            <div id="gas-tab" class="tab-content">
+              <div class="gas-info">
+                <div class="level good">
+                  <h4>Tốt (0 đến 9534)</h4>
+                  <p>
+                    Không khí sạch và an toàn. Không có tác động sức khỏe nào dự
+                    kiến.
+                  </p>
+                </div>
+
+                <div class="level moderate">
+                  <h4>Trung bình (9535 đến 19090)</h4>
+                  <p>
+                    Chất lượng không khí có thể chấp nhận được, nhưng một số cá
+                    nhân nhạy cảm có thể gặp phải tác động sức khỏe nhẹ.
+                  </p>
+                </div>
+
+                <div class="level poor">
+                  <h4>Xấu (19091 đến 28672)</h4>
+                  <p>
+                    Tiếp xúc lâu dài có thể gây ra nhức đầu nhẹ và mệt mỏi, đặc
+                    biệt ở các nhóm dễ bị tổn thương.
+                  </p>
+                </div>
+
+                <div class="level unhealthy">
+                  <h4>Cực kỳ nguy hiểm (28673 đến 38253)</h4>
+                  <p>
+                    Tăng nguy cơ tác động tim mạch và triệu chứng nghiêm trọng
+                    hơn ở các nhóm nhạy cảm.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="aqi-footer">
+      <div class="footer-container">
+        <div class="footer-section">
+          <h3>Giới Thiệu Về AQI</h3>
+          <ul>
+            <li>Bảng Chất Lượng Không Khí</li>
+            <li>Ứng Dụng AQI</li>
+            <li>Ứng Dụng TV AQI</li>
+            <li>Bản Đồ AQI</li>
+            <li>API AQI</li>
+            <li>Tiện ích AQI</li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h3>Xếp Hạng</h3>
+          <ul>
+            <li>Xếp Hạng Thành Phố AQI Trực Tiếp</li>
+            <li>Xếp Hạng Thành Phố AQI Lịch Sử</li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h3>Vị Trí</h3>
+          <ul class="contact-info">
+            <li><i class="fas fa-phone"></i> +84 114</li>
+            <li><i class="fas fa-envelope"></i> NhanPhuHuyDuong@gmail.com</li>
+          </ul>
+        </div>
+
+        <div class="footer-section social-section">
+          <h3>Tìm chúng tôi khi:</h3>
+          <div class="social-icons">
+            <span class="happy-icon">😊</span>
+            <span class="check-icon">🌐</span>
+            <span class="happy-icon">😊</span>
+            <span class="globe-icon">🌐</span>
+          </div>
+          <p class="update-text">Cập nhật AQI</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script src="lstm.js"></script>
+    <script src="tab_content.js"></script>
+    <script src="redirect.js"></script>
+  </body>
+</html>

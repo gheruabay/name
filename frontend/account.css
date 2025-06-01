@@ -1,0 +1,125 @@
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: #f1f5f9;
+}
+
+.account-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 220px;
+  background-color: #1d4ed8;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 20% 20px;
+  gap: 15px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar button {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 16px;
+  text-align: left;
+  cursor: pointer;
+  padding: 12px 10px;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+
+.sidebar button:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.content {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  padding: 40px;
+}
+
+.tab {
+  display: none;
+  width: 100%;
+  max-width: 700px;
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.tab.active {
+  display: block;
+}
+
+h2 {
+  color: #1e293b;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.account-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.account-form label {
+  font-weight: 600;
+  color: #334155;
+}
+
+.account-form input {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  background-color: #f8fafc;
+}
+
+.account-form input[readonly] {
+  background-color: #e2e8f0;
+  color: #475569;
+  cursor: not-allowed;
+}
+
+.account-form button {
+  padding: 10px 16px;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.account-form button:hover {
+  background-color: #1d4ed8;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+th, td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+th {
+  background-color: #f1f5f9;
+  color: #1e293b;
+}
+
+td {
+  background-color: #ffffff;
+}
