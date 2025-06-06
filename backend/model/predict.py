@@ -1,5 +1,3 @@
-# model/predict.py
-
 import pandas as pd
 import numpy as np
 import torch
@@ -82,7 +80,8 @@ def generate_forecast(group_id="hoa_vang", pred_len=10):
 
     results = []
     for i, row in enumerate(preds, 1):
-        predict_time = last_time + timedelta(minutes=i)
+        # Thay đổi: mỗi bước dự báo nhảy 10 phút
+        predict_time = last_time + timedelta(minutes=i * 10)
         temperature, humidity, mq, dust = row
         pm25 = dust / 2
         aqi = calculate_aqi_pm25(pm25)
@@ -90,10 +89,10 @@ def generate_forecast(group_id="hoa_vang", pred_len=10):
         results.append({
             "step": i,
             "timestamp": predict_time.strftime("%Y-%m-%d %H:%M:%S"),
-            "temperature": round(row[0], 2),
-            "humidity": round(row[1], 2),
-            "mq": round(row[2], 2),
-            "dust": round(row[3], 2),
+            "temperature": round(temperature, 2),
+            "humidity": round(humidity, 2),
+            "mq": round(mq, 2),
+            "dust": round(dust, 2),
             "aqi": aqi,
             "chat_luong": chat_luong
         })

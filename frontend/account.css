@@ -7,57 +7,94 @@ body {
 .account-container {
   display: flex;
   min-height: 100vh;
+  align-items: center;
+}
+.notification {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #f44336;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: bold;
+  z-index: 999;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  transition: opacity 0.3s ease-in-out;
 }
 
+.notification.hidden {
+  display: none;
+}
+
+.notification.show {
+  display: block;
+}
+
+/* Sidebar */
 .sidebar {
-  width: 220px;
-  background-color: #1d4ed8;
-  color: white;
+  width: 200px;
+  background: #e0f2fe;
+  color: #89b7d0;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  padding: 20% 20px;
-  gap: 15px;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  padding: 30px 16px;
+  gap: 16px;
+  border-radius: 16px;
+  height: 70vh;
+  margin: 0 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.sidebar .logo {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #89a8b9;
 }
 
 .sidebar button {
   background: transparent;
   border: none;
-  color: white;
-  font-size: 16px;
+  color: #547789;
+  font-size: 15px;
   text-align: left;
   cursor: pointer;
-  padding: 12px 10px;
-  border-radius: 6px;
+  padding: 10px 12px;
+  border-radius: 8px;
   transition: background 0.2s ease;
 }
 
 .sidebar button:hover {
-  background-color: rgba(255, 255, 255, 0.15);
+  background-color: rgba(128, 169, 192, 0.1);
 }
 
+/* Main content */
 .content {
   flex-grow: 1;
   display: flex;
   justify-content: center;
-  align-items: start;
+  align-items: flex-start;
   padding: 40px;
+}
+
+.tab-container {
+  width: 100%;
+  max-width: 750px;
 }
 
 .tab {
   display: none;
-  width: 100%;
-  max-width: 700px;
-  background-color: white;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .tab.active {
   display: block;
 }
+
 
 h2 {
   color: #1e293b;
@@ -65,6 +102,15 @@ h2 {
   text-align: center;
 }
 
+/* Card */
+.card {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 24px;
+}
+
+/* Form */
 .account-form {
   display: flex;
   flex-direction: column;
@@ -97,12 +143,14 @@ h2 {
   border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
+  transition: background-color 0.2s ease;
 }
 
 .account-form button:hover {
   background-color: #1d4ed8;
 }
 
+/* Table */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -122,4 +170,8 @@ th {
 
 td {
   background-color: #ffffff;
+}
+
+.scrollable-table {
+  overflow-x: auto;
 }

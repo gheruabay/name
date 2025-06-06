@@ -1,3 +1,3 @@
 function redirectToLogin() {
-    window.location.href = "login_register.html";
+    window.location.href = "/login_register";
 }

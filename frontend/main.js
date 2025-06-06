@@ -1,4 +1,5 @@
-const socket = new WebSocket(`ws://${window.location.hostname}:8000/ws/data`);
+const socket = new WebSocket(`ws://${window.location.host}/ws/data`);
+
 
 
 function getAQIClass(aqi) {
@@ -50,8 +51,10 @@ function updateUI(data) {
 
 socket.onmessage = function (event) {
     const data = JSON.parse(event.data);
+    console.log("📡 Dữ liệu nhận được từ WebSocket:", data);  // ← ở đây
     updateUI(data);
 };
+
 
 socket.onerror = function (error) {
     console.error("WebSocket Error:", error);

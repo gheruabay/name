@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chất lượng không khí - Da Nang</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="/AQI/styles.css" />
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
@@ -12,87 +12,132 @@
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
   </head>
   <body>
-   <header
-  style="
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 20px;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  "
->
-  <!-- Logo AQI -->
-  <div style="display: flex; align-items: center">
-    <img
-      src="logo_aqi.png"
-      alt="AQI Logo"
-      style="height: 40px; margin-right: 10px"
-    />
-  </div>
-
-  <!-- Search box -->
-  <div style="flex-grow: 1; margin: 0 20px">
-    <input
-      type="text"
-      placeholder="Tìm kiếm bất kỳ Địa điểm, Thành phố, Bang hoặc Quốc gia..."
+    <header
       style="
-        width: 100%;
-        padding: 8px 12px;
-        border-radius: 20px;
-        border: 1px solid #ccc;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 20px;
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       "
-    />
-  </div>
-
-  <!-- Tiêu chuẩn AQI + Ngôn ngữ + Avatar -->
-  <div style="display: flex; align-items: center; gap: 20px">
-    <div>
-      <span style="color: #3399ff; font-size: 14px;">AQI-US</span>
-    </div>
-    <div>
-      <span style="color: #cb2c51; font-size: 14px;">🇻🇳</span>
-    </div>
-
-    <!-- Avatar + Dropdown -->
-    <div id="user-menu" style="position: relative">
-      <img
-        id="user-avatar"
-        src="avatar.png"
-        alt="User Avatar"
-        style="height: 36px; width: 36px; border-radius: 30%; cursor: pointer;"
-        onclick="toggleUserDropdown()"
-      />
-
-      <div
-        id="dropdown-menu"
-        style="
-          display: block;
-          position: absolute;
-          right: 0;
-          top: 45px;
-          background-color: white;
-          border: 1px solid #ccc;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-          border-radius: 6px;
-          overflow: hidden;
-          z-index: 999;
-          min-width: 150px;
-        "
-      >
-        <a
-          href="account.html"
-          style="display: block; padding: 8px 12px; text-decoration: none; color: #333; font-size: 14px;"
-        >👤 Quản lý tài khoản</a>
-        <a
-          href="#"
-          onclick="logout()"
-          style="display: block; padding: 8px 12px; text-decoration: none; color: #e53935; font-size: 14px;"
-        >🚪 Đăng xuất</a>
+    >
+      <!-- Logo AQI -->
+      <div style="display: flex; align-items: center">
+        <img
+          src="/AQI/logo_aqi.png"
+          alt="AQI Logo"
+          style="height: 40px; margin-right: 10px"
+        />
       </div>
-    </div>
-  </div>
-</header>
+
+      <!-- Search box -->
+      <div style="flex-grow: 1; margin: 0 20px">
+        <input
+          type="text"
+          placeholder="Tìm kiếm mục"
+          style="
+            width: 100%;
+            padding: 8px 12px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+          "
+        />
+      </div>
+
+      <!-- Tiêu chuẩn AQI + Ngôn ngữ + Avatar -->
+      <div style="display: flex; align-items: center; gap: 20px">
+        <div>
+          <span style="color: #3399ff; font-size: 14px">AQI-US</span>
+        </div>
+        <div>
+          <span style="color: #cb2c51; font-size: 14px">🇻🇳</span>
+        </div>
+
+        <!-- Avatar + Dropdown -->
+        <div id="user-menu" style="position: relative">
+          <!-- Phần này sẽ thay đổi theo trạng thái đăng nhập -->
+          <div id="user-logged-out" style="display: none">
+            <a
+              href="/login_register"
+              style="
+                font-size: 14px;
+                padding: 8px 16px;
+                background-color: #1e88e5;
+                color: white;
+                text-decoration: none;
+                border-radius: 6px;
+                font-weight: normal;
+                cursor: pointer;
+                display: inline-block;
+                transition: background-color 0.3s ease;
+              "
+              onmouseover="this.style.backgroundColor='#1565c0';"
+              onmouseout="this.style.backgroundColor='#1e88e5';"
+            >
+              Đăng nhập
+            </a>
+          </div>
+
+          <div id="user-logged-in" style="display: none">
+            <img
+              id="user-avatar"
+              src="/AQI/avatar.png"
+              alt="User Avatar"
+              style="
+                height: 25px;
+                width: 30px;
+                border-radius: 30%;
+                cursor: pointer;
+              "
+              onclick="toggleUserDropdown()"
+            />
+            <div
+              id="dropdown-menu"
+              style="
+                display: none;
+                position: absolute;
+                right: 0;
+                top: 45px;
+                background-color: white;
+                border: 1px solid #ccc;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+                border-radius: 6px;
+                overflow: hidden;
+                z-index: 999;
+                min-width: 150px;
+              "
+            >
+              <a
+                href="/account"
+                style="
+                  display: block;
+                  padding: 8px 12px;
+                  text-decoration: none;
+                  color: #333;
+                  font-size: 14px;
+                "
+              >
+                👤 Quản lý tài khoản
+              </a>
+              <a
+                href="/index"
+                onclick="logout()"
+                style="
+                  display: block;
+                  padding: 8px 12px;
+                  text-decoration: none;
+                  color: #e53935;
+                  font-size: 14px;
+                "
+              >
+                🚪 Đăng xuất
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
 
     <main class="center-box">
       <div class="map-box">
@@ -109,7 +154,7 @@
         </div>
         <button
           class="expand-map"
-          onclick="window.open('air_quality_map.html', '_blank')"
+          onclick="window.open('/air_quality_map', '_blank')"
         >
           [ ]
         </button>
@@ -339,9 +384,41 @@
       </div>
     </footer>
 
-    <script src="main.js"></script>
-    <script src="lstm.js"></script>
-    <script src="tab_content.js"></script>
-    <script src="redirect.js"></script>
+    <script src="/AQI/main.js"></script>
+    <script src="/AQI/lstm.js"></script>
+    <script src="/AQI/tab_content.js"></script>
+    <script src="/AQI/redirect.js"></script>
+    <script>
+      function toggleUserDropdown() {
+        const menu = document.getElementById("dropdown-menu");
+        menu.style.display = menu.style.display === "block" ? "none" : "block";
+      }
+
+      function logout() {
+        // Xóa token đăng nhập
+        localStorage.removeItem("token");
+        // Hoặc xóa cookie nếu bạn lưu ở đó
+
+        // Reload lại trang hoặc chuyển về trang login
+        window.location.href = "/index";
+      }
+
+      // Kiểm tra token lúc trang load
+      window.addEventListener("DOMContentLoaded", () => {
+        const token = localStorage.getItem("token"); // hoặc lấy cookie
+        const loggedInDiv = document.getElementById("user-logged-in");
+        const loggedOutDiv = document.getElementById("user-logged-out");
+
+        if (token) {
+          // Đã đăng nhập
+          loggedInDiv.style.display = "block";
+          loggedOutDiv.style.display = "none";
+        } else {
+          // Chưa đăng nhập
+          loggedInDiv.style.display = "none";
+          loggedOutDiv.style.display = "block";
+        }
+      });
+    </script>
   </body>
 </html>

@@ -1,89 +1,124 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quản lý tài khoản</title>
-  <link rel="stylesheet" href="account.css" />
-</head>
-<body>
-  <div class="account-container">
-    <div class="sidebar">
-      <button onclick="location.href='index.html'">🏠 Trang chủ</button>
-      <button onclick="showTab('profile')">👤 Quản lý tài khoản</button>
-      <button onclick="showTab('history')">📊 Lịch sử dữ liệu</button>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quản lý tài khoản</title>
+    <link rel="stylesheet" href="/AQI/account.css" />
+  </head>
+  <body>
+    <!-- Notification Box -->
+    <div id="notification" class="notification hidden">
+      <span id="notification-text"></span>
     </div>
 
-    <div class="content">
-      <!-- Quản lý tài khoản -->
-      <div id="profile-tab" class="tab active">
-        <h2>Thông tin tài khoản</h2>
-        <div class="account-form">
-          <label>Họ tên:</label>
-          <input type="text" value="Nguyễn Văn A" readonly />
+    <div class="account-container">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="logo">🌿 AQI App</div>
+        <button onclick="location.href='/index'">🏠 Trang chủ</button>
+        <button onclick="showTab('profile')">👤 Quản lý tài khoản</button>
+        <button onclick="showTab('history')">📊 Lịch sử dữ liệu</button>
+      </div>
 
-          <label>Email:</label>
-          <input type="email" value="example@email.com" readonly />
+      <!-- Main content -->
+      <div class="content">
+        <div class="tab-container">
+          <!-- Profile tab -->
+          <div id="profile-tab" class="tab active">
+            <h2>Thông tin tài khoản</h2>
+            <div class="card">
+              <div class="account-form">
+                <label>Họ tên:</label>
+                <input type="text" id="name" readonly />
 
-          <button type="button" onclick="togglePasswordFields()">Đổi mật khẩu</button>
+                <label>Email:</label>
+                <input type="email" id="email" readonly />
 
-          <div id="password-fields" style="display: none">
-            <label>Mật khẩu cũ:</label>
-            <input type="password" placeholder="Nhập mật khẩu cũ" />
+                <button type="button" onclick="togglePasswordFields()">
+                  🔐 Đổi mật khẩu
+                </button>
 
-            <label>Mật khẩu mới:</label>
-            <input type="password" placeholder="Nhập mật khẩu mới" />
+                <div
+                  id="password-fields"
+                  class="password-fields"
+                  style="display: none"
+                >
+                  <label>Mật khẩu cũ:</label>
+                  <input type="password" placeholder="Nhập mật khẩu cũ" />
 
-            <button type="submit">Cập nhật mật khẩu</button>
+                  <label>Mật khẩu mới:</label>
+                  <input type="password" placeholder="Nhập mật khẩu mới" />
+
+                  <button type="submit">✅ Cập nhật mật khẩu</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- History tab -->
+          <div id="history-tab" class="tab">
+            <h2>Lịch sử đo chất lượng không khí</h2>
+            <div class="card scrollable-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Thời gian</th>
+                    <th>Nhiệt độ (°C)</th>
+                    <th>Độ ẩm (%)</th>
+                    <th>Bụi mịn</th>
+                    <th>Khí độc</th>
+                    <th>AQI</th>
+                    <th>Chất lượng</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Dữ liệu sẽ được thêm bằng JS -->
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
-
-      <!-- Lịch sử dữ liệu -->
-      <div id="history-tab" class="tab">
-        <h2>Lịch sử đo chất lượng không khí</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Thời gian</th>
-              <th>Nhiệt độ (°C)</th>
-              <th>Độ ẩm (%)</th>
-              <th>PM2.5 (μg/m³)</th>
-              <th>PM10 (μg/m³)</th>
-              <th>Khí độc (ppq)</th>
-              <th>AQI</th>
-              <th>Chất lượng</th>
-            </tr>
-          </thead>
-         <tbody>
-  <tr><td>2025-05-20 10:00</td><td>31.2</td><td>45</td><td>56</td><td>72</td><td>120</td><td>95</td><td>Trung bình</td></tr>
-  <tr><td>2025-05-20 09:00</td><td>30.5</td><td>50</td><td>48</td><td>68</td><td>100</td><td>85</td><td>Trung bình</td></tr>
-  <tr><td>2025-05-20 08:00</td><td>29.8</td><td>52</td><td>40</td><td>60</td><td>90</td><td>78</td><td>Tốt</td></tr>
-  <tr><td>2025-05-20 07:00</td><td>28.9</td><td>55</td><td>35</td><td>50</td><td>85</td><td>72</td><td>Tốt</td></tr>
-  <tr><td>2025-05-20 06:00</td><td>28.2</td><td>58</td><td>30</td><td>45</td><td>80</td><td>65</td><td>Tốt</td></tr>
-  <tr><td>2025-05-20 05:00</td><td>27.6</td><td>60</td><td>25</td><td>42</td><td>75</td><td>60</td><td>Tốt</td></tr>
-  <tr><td>2025-05-20 04:00</td><td>27.0</td><td>63</td><td>22</td><td>38</td><td>70</td><td>58</td><td>Tốt</td></tr>
-  <tr><td>2025-05-20 03:00</td><td>26.5</td><td>65</td><td>20</td><td>35</td><td>68</td><td>55</td><td>Tốt</td></tr>
-  <tr><td>2025-05-20 02:00</td><td>26.2</td><td>67</td><td>19</td><td>32</td><td>65</td><td>53</td><td>Tốt</td></tr>
-  <tr><td>2025-05-20 01:00</td><td>26.0</td><td>68</td><td>18</td><td>30</td><td>60</td><td>50</td><td>Tốt</td></tr>
-  <tr><td>2025-05-20 00:00</td><td>25.8</td><td>70</td><td>16</td><td>28</td><td>58</td><td>48</td><td>Tốt</td></tr>
-</tbody>
-
-        </table>
-      </div>
     </div>
-  </div>
+    <script>
+      function showTab(tabName) {
+        const tabs = document.querySelectorAll(".tab");
+        tabs.forEach((tab) => tab.classList.remove("active"));
 
-  <script>
-    function showTab(tabId) {
-      document.querySelectorAll(".tab").forEach((tab) => tab.classList.remove("active"));
-      document.getElementById(tabId + "-tab").classList.add("active");
-    }
+        const selectedTab = document.getElementById(`${tabName}-tab`);
+        if (selectedTab) {
+          selectedTab.classList.add("active");
+        }
+      }
+    </script>
+    <script>
+      function showNotification(message, timeout = 4000) {
+        const box = document.getElementById("notification");
+        const text = document.getElementById("notification-text");
 
-    function togglePasswordFields() {
-      const field = document.getElementById("password-fields");
-      field.style.display = field.style.display === "none" ? "block" : "none";
-    }
-  </script>
-</body>
+        if (box && text) {
+          text.textContent = message;
+          box.classList.remove("hidden");
+          box.classList.add("visible");
+
+          // Tự ẩn sau vài giây
+          setTimeout(() => {
+            box.classList.remove("visible");
+            box.classList.add("hidden");
+          }, timeout);
+        }
+      }
+
+      function togglePasswordFields() {
+        const fields = document.getElementById("password-fields");
+        if (fields) {
+          fields.style.display =
+            fields.style.display === "none" ? "block" : "none";
+        }
+      }
+    </script>
+
+    <script src="/AQI/account.js"></script>
+  </body>
 </html>

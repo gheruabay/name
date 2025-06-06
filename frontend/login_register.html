@@ -1,196 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login/Register Page</title>
-  <link rel="stylesheet" href="login_register.css">
-  <style>
-    /* Optional basic style if login_register.css chưa có */
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    .login-container {
-      display: flex;
-      min-height: 100vh;
-    }
-    .image-section {
-      flex: 1;
-      background: url('https://dash.aqi.in/_next/static/media/sidebar-bg.52323289.webp') center/cover no-repeat;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .form-section {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #f9f9f9;
-    }
-    .form-container {
-      width: 100%;
-      max-width: 400px;
-      background: white;
-      padding: 2rem;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      border-radius: 8px;
-    }
-    .tabs {
-      display: flex;
-      margin-bottom: 1rem;
-      border-bottom: 2px solid #ccc;
-    }
-    .tab {
-      flex: 1;
-      text-align: center;
-      padding: 1rem;
-      cursor: pointer;
-      font-weight: bold;
-      color: #666;
-    }
-    .tab.active {
-      color: #007BFF;
-      border-bottom: 2px solid #007BFF;
-    }
-    .form-group {
-      margin-bottom: 1rem;
-    }
-    .form-group label {
-      display: block;
-      margin-bottom: 0.5rem;
-    }
-    .form-control {
-      width: 100%;
-      padding: 0.5rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    .password-toggle {
-      position: absolute;
-      right: 1rem;
-      top: 50%;
-      transform: translateY(-50%);
-      cursor: pointer;
-    }
-    .btn {
-      width: 100%;
-      padding: 0.75rem;
-      border: none;
-      background: #007BFF;
-      color: white;
-      font-weight: bold;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    .btn:hover {
-      background: #0056b3;
-    }
-    .form-options {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
-    }
-    .form-group.relative {
-      position: relative;
-    }
-  </style>
-</head>
-<body>
-  <div class="login-container">
-    <!-- Left Side -->
-    <div class="image-section">
-      <div class="image-content">
-        <h1>AQI - Chất lượng không khí</h1>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login/Register Page</title>
+    <link rel="stylesheet" href="/AQI/login_register.css" />
+  </head>
+  <body>
+    <div class="login-container">
+      <!-- Left Side -->
+      <div class="image-section">
+        <div class="image-content">
+          <h1>AQI - Chất lượng không khí</h1>
+        </div>
+      </div>
+
+      <!-- Right Side -->
+      <div class="form-section">
+        <div class="form-container">
+          <div class="form-header">
+            <h2 id="form-title">Đăng Nhập</h2>
+          </div>
+
+          <div class="tabs">
+            <div class="tab active" data-form="login">Đăng nhập</div>
+            <div class="tab" data-form="register">Đăng ký</div>
+          </div>
+
+          <form id="auth-form">
+            <!-- Chỉ hiện khi đăng ký -->
+            <div class="form-group" id="name-group" style="display: none">
+              <label for="name">Họ tên</label>
+              <input
+                type="text"
+                id="name"
+                class="form-control"
+                placeholder="Nhập họ tên"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                class="form-control"
+                placeholder="Nhập email"
+                required
+              />
+            </div>
+
+            <div class="form-group relative">
+              <label for="password">Mật khẩu</label>
+              <input
+                type="password"
+                id="password"
+                class="form-control"
+                placeholder="Nhập mật khẩu"
+                required
+              />
+              <span class="password-toggle">👁️</span>
+            </div>
+
+            <!-- Chỉ hiện khi đăng ký -->
+            <div class="form-group" id="confirm-group" style="display: none">
+              <label for="confirm-password">Nhập lại mật khẩu</label>
+              <input
+                type="password"
+                id="confirm-password"
+                class="form-control"
+                placeholder="Nhập lại mật khẩu"
+              />
+            </div>
+
+            <div class="form-options" id="login-options">
+              <a href="#" class="forgot-password">Quên mật khẩu?</a>
+            </div>
+
+            <!-- Thông báo lỗi -->
+            <div
+              id="error-message"
+              style="color: red; font-size: 14px; margin-bottom: 10px"
+            ></div>
+
+            <button type="submit" class="btn" id="submit-btn">Đăng nhập</button>
+          </form>
+        </div>
       </div>
     </div>
+    <script src="/AQI/login_register.js"></script>
+    <script>
+      const tabs = document.querySelectorAll(".tab");
+      const nameGroup = document.getElementById("name-group");
+      const confirmGroup = document.getElementById("confirm-group");
+      const formTitle = document.getElementById("form-title");
+      const loginOptions = document.getElementById("login-options");
+      const submitBtn = document.getElementById("submit-btn");
 
-    <!-- Right Side -->
-    <div class="form-section">
-      <div class="form-container">
-        <div class="form-header">
-          <h2 id="form-title">Đăng Nhập</h2>
-        </div>
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", function () {
+          tabs.forEach((t) => t.classList.remove("active"));
+          this.classList.add("active");
 
-        <div class="tabs">
-          <div class="tab active" data-form="login">Đăng nhập</div>
-          <div class="tab" data-form="register">Đăng ký</div>
-        </div>
-
-        <form id="auth-form">
-          <!-- Chỉ hiện khi đăng ký -->
-          <div class="form-group" id="name-group" style="display: none;">
-            <label for="name">Họ tên</label>
-            <input type="text" id="name" class="form-control" placeholder="Nhập họ tên">
-          </div>
-
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" class="form-control" placeholder="Nhập email" required>
-          </div>
-
-          <div class="form-group relative">
-            <label for="password">Mật khẩu</label>
-            <input type="password" id="password" class="form-control" placeholder="Nhập mật khẩu" required>
-            <span class="password-toggle">👁️</span>
-          </div>
-
-          <!-- Chỉ hiện khi đăng ký -->
-          <div class="form-group" id="confirm-group" style="display: none;">
-            <label for="confirm-password">Nhập lại mật khẩu</label>
-            <input type="password" id="confirm-password" class="form-control" placeholder="Nhập lại mật khẩu">
-          </div>
-
-          <div class="form-options" id="login-options">
-            <a href="#" class="forgot-password">Quên mật khẩu?</a>
-          </div>
-
-          <button type="submit" class="btn" id="submit-btn">Đăng nhập</button>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    const tabs = document.querySelectorAll('.tab');
-    const nameGroup = document.getElementById('name-group');
-    const confirmGroup = document.getElementById('confirm-group');
-    const formTitle = document.getElementById('form-title');
-    const loginOptions = document.getElementById('login-options');
-    const submitBtn = document.getElementById('submit-btn');
-
-    tabs.forEach(tab => {
-      tab.addEventListener('click', function() {
-        tabs.forEach(t => t.classList.remove('active'));
-        this.classList.add('active');
-
-        const formType = this.dataset.form;
-        if (formType === 'login') {
-          nameGroup.style.display = 'none';
-          confirmGroup.style.display = 'none';
-          loginOptions.style.display = 'flex';
-          formTitle.textContent = 'Đăng Nhập';
-          submitBtn.textContent = 'Đăng nhập';
-        } else {
-          nameGroup.style.display = 'block';
-          confirmGroup.style.display = 'block';
-          loginOptions.style.display = 'none';
-          formTitle.textContent = 'Đăng Ký';
-          submitBtn.textContent = 'Đăng ký';
-        }
+          const formType = this.dataset.form;
+          if (formType === "login") {
+            nameGroup.style.display = "none";
+            confirmGroup.style.display = "none";
+            loginOptions.style.display = "flex";
+            formTitle.textContent = "Đăng Nhập";
+            submitBtn.textContent = "Đăng nhập";
+          } else {
+            nameGroup.style.display = "block";
+            confirmGroup.style.display = "block";
+            loginOptions.style.display = "none";
+            formTitle.textContent = "Đăng Ký";
+            submitBtn.textContent = "Đăng ký";
+          }
+        });
       });
-    });
 
-    // Toggle password visibility
-    document.querySelector('.password-toggle').addEventListener('click', function () {
-      const passwordInput = document.getElementById('password');
-      passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
-      this.textContent = passwordInput.type === 'password' ? '👁️' : '🙈';
-    });
-  </script>
-</body>
+      // Toggle password visibility
+      document
+        .querySelector(".password-toggle")
+        .addEventListener("click", function () {
+          const passwordInput = document.getElementById("password");
+          passwordInput.type =
+            passwordInput.type === "password" ? "text" : "password";
+          this.textContent = passwordInput.type === "password" ? "👁️" : "🙈";
+        });
+    </script>
+  </body>
 </html>
